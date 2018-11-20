@@ -8,57 +8,61 @@ GAME RULES:
 - The first player to reach 100 points on GLOBAL score wins the game
 
 */
-var scores,activePlayer,dice,maxPlay;
+var scores,activePlayer,dice,maxPlay,playPoint;
+playPoint = 100;
 maxPlay = 80;
 activePlayer = 0;
 scores = [0,0];
 
-// function rool(){
-// 	var currentValue = document.getElementById("current-"+activePlayer).textContent;
-// 	var allScore = document.getElementById("score-"+activePlayer).textContent;
-// 	if (parseInt(allScore ) > 80){
-// 		dice = Math.floor(Math.random()*3)+1;
-// 		document.getElementsByClassName('dice')[0].src = "dice-"+dice+".png";
-// 	}else{
-// 		dice = Math.floor(Math.random()*6)+1;
-// 		document.getElementsByClassName('dice')[0].src = "dice-"+dice+".png";
-// 	}
-// 	if(dice == 1 ){
+function rool(){
+	var currentValue = document.getElementById("current-"+activePlayer).textContent;
+	var allScore = document.getElementById("score-"+activePlayer).textContent;
+	if (parseInt(allScore ) > maxPlay){
+		dice = Math.floor(Math.random()*3)+1;
+		document.getElementsByClassName('dice')[0].src = "dice-"+dice+".png";
+	}else{
+		dice = Math.floor(Math.random()*6)+1;
+		document.getElementsByClassName('dice')[0].src = "dice-"+dice+".png";
+	}
+	if(dice == 1 ){
+		changePlayer();
+	}else{
 
-// 		changePlayer();
-// 	}else{
-// 		document.getElementById("current-"+activePlayer).textContent = parseInt(currentValue) + dice;
-// 	}
-	
+		document.getElementById("current-"+activePlayer).textContent = parseInt(currentValue) + dice;
+	}
 
-// }
-// function hold(){
-// 	var currentValue = document.getElementById("current-"+activePlayer).textContent;
-// 	var value = document.getElementById("score-"+activePlayer).textContent;
-// 	document.getElementById("score-"+activePlayer).textContent = parseInt(value) + parseInt(currentValue);
-// 	changePlayer();
-// }
-// function changePlayer(){
-// 	document.getElementById("current-"+activePlayer).textContent = 0;
-// 	if (activePlayer == 0){
-// 		document.getElementsByClassName("player-0-panel")[0].classList.remove("active");
-// 		document.getElementsByClassName("player-1-panel")[0].classList.add("active");
-// 		activePlayer = 1;
-// 	}else{
-// 		document.getElementsByClassName("player-1-panel")[0].classList.remove("active");
-// 		document.getElementsByClassName("player-0-panel")[0].classList.add("active");
-// 		activePlayer = 0;
-// 	}
-// }
-// function scooreChange(){
-// 	document.getElementById("score-0").textContent = score[0]
-// 	document.getElementById("score-1").textContent = score[1]
-// }
- function roolDice(){
- 	if (score[activePlayer] > maxPlay ) {
- 		dice = Math.floor(Math.random()*3)+1;
- 	}else{
- 		dice = Math.floor(Math.random()*6)+1;
- 	}
- 	document.querySelector('.dice').src = "dice-"+dice+".png";
- }
+}
+function hold(){
+	var currentValue = document.getElementById("current-"+activePlayer).textContent;
+	scores[activePlayer] += parseInt(currentValue);
+	if (scores[activePlayer] > playPoint){ //when palyer win add class winner
+		document.getElementById("name-"+activePlayer).textContent += "\nwinner !!"
+		document.getElementsByClassName("player-"+activePlayer+"-panel")[0].classList.add("winner");
+		document.getElementsByClassName("btn-roll").innerHTML = '';
+	}
+	var value = document.getElementById("score-"+activePlayer).textContent;
+	document.getElementById("score-"+activePlayer).textContent = parseInt(value) + parseInt(currentValue);
+	changePlayer();
+}
+function changePlayer(){
+	document.getElementById("current-"+activePlayer).textContent = 0;
+	if (activePlayer == 0){
+		document.getElementsByClassName("player-0-panel")[0].classList.remove("active");
+		document.getElementsByClassName("player-1-panel")[0].classList.add("active");
+		activePlayer = 1;
+	}else{
+		document.getElementsByClassName("player-1-panel")[0].classList.remove("active");
+		document.getElementsByClassName("player-0-panel")[0].classList.add("active");
+		activePlayer = 0;
+	}
+}
+function newGame(){
+	scores = [0,0];
+	document.getElementsByClassName("player-1-panel")[0].classList.remove("winner");
+	document.getElementsByClassName("player-0-panel")[0].classList.remove("winner");
+	document.getElementById("current-0").textContent = 0;
+	document.getElementById("score-0").textContent = 0;
+	document.getElementById("current-1").textContent = 0;
+	document.getElementById("score-1").textContent = 0;
+	changePlayer();
+}
